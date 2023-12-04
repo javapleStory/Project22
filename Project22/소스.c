@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define Max_Element 200
 
 typedef struct {
@@ -39,7 +40,7 @@ element delete_max_heap(HeapType* h)
 		{
 			child++;
 		}
-		if (temp.key > h->array[child].key) break;
+		if (temp.key >= h->array[child].key) break;
 		parent = child;
 		child = 2 * child;
 	}
@@ -50,6 +51,22 @@ element delete_max_heap(HeapType* h)
 void init_heap(HeapType* h)
 {
 	h->size = 0;
+}
+
+void heap_sort(element a[], int n)
+{
+	HeapType* heap = (HeapType*)malloc(sizeof(HeapType));
+	init_heap(heap);
+
+	for(int i = 0; i < n; i++) insert_max_heap(heap, a[i]);
+	for (int i = n - 1; i >= 0; i--) a[i] = delete_max_heap(heap);
+	for (int i = 0; i < n; i++)
+	{
+		printf("< %d > ", a[i].key);
+	}
+	printf("\n");
+
+	free(heap);
 }
 
 int main(void)
@@ -87,6 +104,12 @@ int main(void)
 	printf("< %d > ", e5.key);
 	e6 = delete_max_heap(&h);
 	printf("< %d > ", e6.key);
+	printf("\n");
+
+
+	int size = 12;
+	element a[12] = { 5,8,7,6,10,21,18,12,4,6,1,5 };
+	heap_sort(a, size);
 
 	return 1;
 }
